@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificación Profesional - Clínica de la Convergencia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-cream: #FDFBF7;
+            --color-gold: #C5A059;
+            --color-navy: #0A1F44;
+            --color-text: #2D3748;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-cream);
+            color: var(--color-text);
+            scroll-behavior: smooth;
+        }
+        .diploma-font { font-family: 'Cormorant Garamond', serif; }
+        .title-font { font-family: 'Cinzel', serif; }
+        
+        .diploma-container {
+            background: white;
+            border: 20px double var(--color-gold);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .interactive-section {
+            transition: all 0.3s ease;
+        }
+        
+        @media print {
+            .no-print { display: none; }
+            .print-only { display: block !important; }
+            body { background: white; }
+            .diploma-container { border: 10px double var(--color-gold); box-shadow: none; margin: 0; }
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF7]">
+
+    <nav class="no-print sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#C5A059]/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-[#0A1F44] flex items-center justify-center rounded">
+                        <span class="text-[#C5A059] font-bold">CC</span>
+                    </div>
+                    <span class="title-font text-[#0A1F44] font-bold text-sm tracking-widest hidden sm:block">CLÍNICA DE LA CONVERGENCIA</span>
+                </div>
+                <div class="flex gap-6 text-sm font-semibold text-[#0A1F44]">
+                    <a href="#inicio" class="hover:text-[#C5A059] transition-colors">Inicio</a>
+                    <a href="#certificador" class="hover:text-[#C5A059] transition-colors">Generador</a>
+                    <a href="#analisis" class="hover:text-[#C5A059] transition-colors">Analítica</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="inicio" class="no-print pt-16 pb-12 px-4 text-center fade-in">
+        <h1 class="title-font text-4xl md:text-6xl text-[#0A1F44] mb-4">Portal de Certificación</h1>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600 italic">"Transformando la formación profesional en reconocimiento tangible y validado."</p>
+        <div class="mt-8 flex justify-center gap-4">
+            <a href="#certificador" class="bg-[#0A1F44] text-white px-8 py-3 rounded-full hover:bg-[#C5A059] transition-all shadow-lg">Generar Diploma</a>
+            <a href="#analisis" class="border border-[#0A1F44] text-[#0A1F44] px-8 py-3 rounded-full hover:bg-gray-50 transition-all">Ver Estadísticas</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 pb-24">
+
+        <section id="certificador" class="fade-in">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 p-6 md:p-12">
+                <div class="grid lg:grid-cols-3 gap-12">
+                    <div class="no-print space-y-6">
+                        <div>
+                            <h2 class="title-font text-2xl text-[#0A1F44] mb-4 border-b-2 border-[#C5A059] inline-block">Configuración</h2>
+                            <p class="text-sm text-gray-500 mb-6">Complete los datos para previsualizar el diploma oficial en tiempo real.</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Nombre del Estudiante</label>
+                                <input type="text" id="inputName" placeholder="Juan Pérez" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#C5A059] focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">D.N.I. N°</label>
+                                <input type="text" id="inputDNI" placeholder="00.000.000" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#C5A059] focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Fecha de Emisión</label>
+                                <input type="date" id="inputDate" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#C5A059] focus:outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <div class="pt-6">
+                            <button onclick="window.print()" class="w-full bg-[#C5A059] text-white py-4 rounded-xl font-bold hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                                <span>Descargar PDF Oficial</span>
+                            </button>
+                            <p class="text-center text-[10px] text-gray-400 mt-4 uppercase tracking-widest">Documento válido según acta N° 2024-CC</p>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 flex flex-col justify-center">
+                        <div id="diplomaElement" class="diploma-container p-8 md:p-16 text-center">
+                            <div class="flex justify-between items-start mb-8">
+                                <img src="logo_6.jpg" alt="Logo Clínica" class="h-20 md:h-24 object-contain">
+                                <div class="text-right">
+                                    <p class="title-font text-[10px] text-[#0A1F44] tracking-[0.2em]">CÓRDOBA, ARGENTINA</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+                                <h3 class="title-font text-lg md:text-xl text-[#0A1F44] font-bold tracking-widest">PROGRAMA DE FORMACIÓN PARA PROFESIONALES</h3>
+                                <h4 class="title-font text-[#C5A059] text-2xl md:text-3xl font-bold">Clínica de la Convergencia</h4>
+                                <p class="text-xs font-semibold text-gray-500">Director: Dr. y Mgter. Rubén M. Pereyra</p>
+                                
+                                <div class="py-8">
+                                    <p class="diploma-font text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto italic">
+                                        La dirección del programa de Formación para profesionales "Clínica de la Convergencia", en función de haber cumplimentado con la exigencia de asistencia y acreditación evaluativa, otorga el presente diploma a:
+                                    </p>
+                                </div>
+
+                                <div class="py-4">
+                                    <p id="previewName" class="title-font text-3xl md:text-4xl text-[#0A1F44] border-b border-[#C5A059] inline-block px-8 pb-2">APELLIDO Y NOMBRE</p>
+                                    <p class="mt-4 text-gray-600 font-semibold uppercase tracking-widest text-sm">
+                                        D.N.I. N°: <span id="previewDNI">00.000.000</span>
+                                    </p>
+                                </div>
+
+                                <div class="grid grid-cols-3 items-end pt-12">
+                                    <div class="text-left text-xs text-gray-500">
+                                        <p>Emitido en Córdoba,</p>
+                                        <p id="previewDate" class="font-bold">____ de ____ de 202X</p>
+                                    </div>
+                                    <div class="flex justify-center">
+                                        <img src="sello_2.jpg" alt="Sello Oficial" class="h-24 md:h-28 opacity-90 transform -rotate-6">
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="border-t border-[#0A1F44] pt-2 inline-block">
+                                            <p class="text-[10px] font-bold text-[#0A1F44]">Dr. y Mgter. Rubén M. Pereyra</p>
+                                            <p class="text-[8px] uppercase tracking-tighter text-gray-500">Director del Programa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analisis" class="no-print space-y-12">
+            <div class="text-center space-y-4">
+                <h2 class="title-font text-3xl text-[#0A1F44]">Criterios de Acreditación</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">Análisis del rendimiento académico y requisitos fundamentales para la obtención de la certificación profesional.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <h3 class="font-bold text-[#0A1F44] mb-6 flex items-center gap-2">
+                        <span>Requisitos de Cumplimiento</span>
+                        <span class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded">ACTUALIZADO</span>
+                    </h3>
+                    <div class="chart-container flex-grow">
+                        <canvas id="complianceChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-6 leading-relaxed">
+                        Para la obtención del diploma, es mandatorio alcanzar un **80% de asistencia** y una **calificación mínima de 7/10** en el eje evaluativo. Este gráfico muestra la distribución del peso académico.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <h3 class="font-bold text-[#0A1F44] mb-6 flex items-center gap-2">
+                        <span>Evolución de Egresados</span>
+                        <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded">HISTÓRICO</span>
+                    </h3>
+                    <div class="chart-container flex-grow">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-6 leading-relaxed">
+                        El programa ha mantenido un crecimiento sostenido, incrementando el nivel de exigencia técnica en cada cohorte.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-6 bg-[#0A1F44] text-white rounded-xl">
+                    <div class="text-3xl font-bold text-[#C5A059] mb-2">+150</div>
+                    <div class="text-xs uppercase tracking-widest opacity-80">Profesionales Certificados</div>
+                </div>
+                <div class="p-6 bg-white border border-[#C5A059]/30 rounded-xl">
+                    <div class="text-3xl font-bold text-[#0A1F44] mb-2">94%</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-500">Tasa de Aprobación</div>
+                </div>
+                <div class="p-6 bg-white border border-[#C5A059]/30 rounded-xl">
+                    <div class="text-3xl font-bold text-[#0A1F44] mb-2">120hs</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-500">Carga Horaria Total</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="no-print bg-[#0A1F44] rounded-3xl p-8 md:p-16 text-white relative overflow-hidden">
+            <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="title-font text-3xl mb-6 text-[#C5A059]">Autoridad Académica</h2>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        Bajo la dirección del **Dr. y Mgter. Rubén M. Pereyra**, el programa se consolida como un espacio de convergencia clínica y teórica de vanguardia. Cada diploma emitido cuenta con el respaldo institucional y el sello de calidad de nuestra entidad.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="text-[#C5A059] font-bold text-xl">✓</span> Validación por Comité de Docencia
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="text-[#C5A059] font-bold text-xl">✓</span> Acreditación de Horas de Práctica
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="text-[#C5A059] font-bold text-xl">✓</span> Marco Teórico Actualizado 2024
+                        </li>
+                    </ul>
+                </div>
+                <div class="hidden md:flex justify-center">
+                    <div class="w-64 h-64 border-4 border-[#C5A059] rounded-full flex items-center justify-center p-4">
+                        <div class="text-center">
+                            <span class="title-font text-5xl">CC</span>
+                            <div class="h-1 w-12 bg-[#C5A059] mx-auto my-2"></div>
+                            <span class="text-[10px] uppercase tracking-tighter">Sello de Excelencia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="no-print border-t border-gray-200 py-12 text-center bg-white">
+        <p class="title-font text-[#0A1F44] font-bold tracking-widest mb-2">CLÍNICA DE LA CONVERGENCIA</p>
+        <p class="text-xs text-gray-400">© 2024 Todos los derechos reservados. Córdoba, Argentina.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputName = document.getElementById('inputName');
+            const inputDNI = document.getElementById('inputDNI');
+            const inputDate = document.getElementById('inputDate');
+            
+            const previewName = document.getElementById('previewName');
+            const previewDNI = document.getElementById('previewDNI');
+            const previewDate = document.getElementById('previewDate');
+
+            const updatePreview = () => {
+                previewName.textContent = inputName.value.toUpperCase() || 'APELLIDO Y NOMBRE';
+                previewDNI.textContent = inputDNI.value || '00.000.000';
+                
+                if (inputDate.value) {
+                    const date = new Date(inputDate.value);
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    previewDate.textContent = date.toLocaleDateString('es-ES', options);
+                } else {
+                    previewDate.textContent = '____ de ____ de 202X';
+                }
+            };
+
+            inputName.addEventListener('input', updatePreview);
+            inputDNI.addEventListener('input', updatePreview);
+            inputDate.addEventListener('input', updatePreview);
+
+            const ctx1 = document.getElementById('complianceChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Asistencia', 'Acreditación Evaluativa', 'Prácticas'],
+                    datasets: [{
+                        data: [40, 40, 20],
+                        backgroundColor: ['#0A1F44', '#C5A059', '#E2E8F0'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: 'Graduados',
+                        data: [25, 38, 42, 55],
+                        backgroundColor: '#0A1F44',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!-- Chosen Palette: Sinfonía Académica (Crema #FDFBF7, Oro #C5A059, Azul Naval #0A1F44) -->
+<!-- Application Structure Plan: 
+    La SPA está diseñada como un "Centro de Certificación Interactivo". 
+    Se divide en:
+    1. Hero: Introducción a la marca y autoridad.
+    2. Generador: Una herramienta interactiva (dashboard style) donde el usuario ingresa sus datos y ve el diploma oficial renderizado en tiempo real. Se elige este flujo para dar gratificación inmediata y utilidad práctica al reporte.
+    3. Análisis (Dashboard): Visualizaciones dinámicas que explican los datos cualitativos y cuantitativos del reporte (requisitos de asistencia, crecimiento de alumnos).
+    4. Autoridad: Información contextual sobre el Director para dar validez institucional.
+-->
+<!-- Visualization & Content Choices: 
+    - Diploma Preview -> Goal: Representación final -> HTML/CSS -> Interacción en tiempo real (Input JS) -> Proporciona utilidad directa.
+    - Requisitos -> Goal: Informar proporciones -> Chart.js Doughnut -> Representación clara del peso académico.
+    - Evolución -> Goal: Comparar histórico -> Chart.js Bar -> Muestra el éxito del programa a lo largo del tiempo.
+    - Sello y Firma -> Goal: Validación -> Imágenes estáticas bien posicionadas -> Confirma NO uso de SVG.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
